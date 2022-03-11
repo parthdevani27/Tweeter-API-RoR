@@ -4,7 +4,8 @@ class User < ApplicationRecord
   # devise :database_authenticatable, :registerable,
   #        :recoverable, :rememberable, :validatable
   has_many :accounts ,dependent: :destroy
-  has_many :tweets
+  has_many :following, class_name: "Account", foreign_key: "following"
+  has_many :tweets ,dependent: :destroy
   devise :database_authenticatable,
          :jwt_authenticatable,
          :registerable,
@@ -22,4 +23,6 @@ class User < ApplicationRecord
     def unfollow(other_user_id)
       self.accounts.find_by(following:other_user_id).destroy
     end
+
+
 end

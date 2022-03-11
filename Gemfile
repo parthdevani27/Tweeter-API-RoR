@@ -22,6 +22,8 @@ gem 'rack-cors'
 
 gem 'devise-jwt'
 
+gem 'active_model_serializers'
+
 gem 'dotenv-rails', groups: [:development, :test]
 
 # Use Active Storage variant

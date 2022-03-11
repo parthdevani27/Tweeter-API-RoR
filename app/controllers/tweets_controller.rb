@@ -1,28 +1,28 @@
 class TweetsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_tweet ,except: [:create,:index]
+    before_action :set_tweet ,only: [:destroy,:update]
 
     def index
         @data = current_user.tweets.all
-        render :json => {:status => "success",:data => @data}
+        render :json => {status: 200,type: 'Success',:data => @data}
     end
 
     def create
         if current_user.tweets.create(tweet_params)
-            render :json => {:status => "success",:message => "Your tweet has been uploaded"}
+            render :json => {status: 200,type: 'Success',:message => "Your tweet has been uploaded"}
         end
     end
 
     def destroy
         @tweet.destroy
-        render :json => {:status => "success",:message => "Your tweet has been deleted"}
+        render :json => {status: 200,type: 'Success',:message => "Your tweet has been deleted"}
     end
 
     def update 
         if @tweet.update(tweet_params)
-            render :json => {:status => "success",:message => "Your tweet has been updated"}
+            render :json => {status: 200,type: 'Success',:message => "Your tweet has been updated"}
         else
-            render :json => {:status => "error",:message => ""}
+            render :json => {:type => "error",:message => ""}
         end
     end
 
