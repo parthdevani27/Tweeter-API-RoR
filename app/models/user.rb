@@ -12,16 +12,16 @@ class User < ApplicationRecord
          jwt_revocation_strategy: JwtDenylist
 
   
-    def following?(other_user_id)
-      self.accounts.exists?(following: other_user_id)
+    def following?(follow_user_id)
+      self.accounts.exists?(following: follow_user_id)
     end
 
-    def follow(other_user_id)
-      self.accounts.create(following: other_user_id)
+    def follow(follow_user_id)
+      self.accounts.create(following: follow_user_id)
     end
 
-    def unfollow(other_user_id)
-      self.accounts.find_by(following:other_user_id).destroy
+    def unfollow(follow_user_id)
+      self.accounts.find_by(following:follow_user_id).destroy
     end
 
 

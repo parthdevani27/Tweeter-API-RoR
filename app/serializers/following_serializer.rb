@@ -5,8 +5,7 @@ class FollowingSerializer < ActiveModel::Serializer
     object.accounts.map do |account|
       {
         id: account.id,
-        user_id: account.following,
-        user_email: User.find(account.following).email,
+        user: User.find(account.following),
       }
     end
   end

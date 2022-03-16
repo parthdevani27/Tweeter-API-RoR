@@ -2,12 +2,12 @@ class AccountsController < ApplicationController
 before_action :authenticate_user!
 
     def create
-        @other_user_id = params[:user_id]
-        if User.exists?(@other_user_id) && @other_user_id != current_user.id
-            if current_user.following?(@other_user_id)
+        @follow_user_id = params[:user_id]
+        if User.exists?(@follow_user_id) && @follow_user_id != current_user.id
+            if current_user.following?(@follow_user_id)
                 render :json => {:type => "error",:message => "You are already following this user"}
             else
-                current_user.follow(@other_user_id)
+                current_user.follow(@follow_user_id)
                 render :json => {status: 200,type: 'Success',:message => "You are now following this user"}
             end
         else
@@ -17,10 +17,10 @@ before_action :authenticate_user!
     end
 
     def destroy
-        @other_user_id = params[:id]
-        if User.exists?(@other_user_id)
-            if current_user.following?(@other_user_id)
-                current_user.unfollow(@other_user_id)
+        @follow_user_id = params[:id]
+        if User.exists?(@follow_user_id)
+            if current_user.following?(@follow_user_id)
+                current_user.unfollow(@follow_user_id)
                 render :json => {status: 200,type: 'Success',:message => "You are unfollowed this user"}
             else
                 render :json => {:type => "error",:message => "You are not following this user"}
@@ -31,11 +31,13 @@ before_action :authenticate_user!
     end
 
     def followers
-        render json: {
-            data: ActiveModelSerializers::SerializableResource.new(current_user, serializer: FollowerSerializer),
-            message: ['followers list fetched successfully'],
-            status: 200,type: 'Success'
-        }
+        render json: current_user, serializer: FollowerSerializer
+
+        # render json: {
+        #     data: ActiveModelSerializers::SerializableResource.new(current_user, serializer: FollowerSerializer),
+        #     message: ['followers list fetched successfully'],
+        #     status: 200,type: 'Success'
+        # }
     end
 
     def following

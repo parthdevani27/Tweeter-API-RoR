@@ -4,13 +4,9 @@ class FollowerSerializer < ActiveModel::Serializer
     object.following.map do |item|
       {
         id: item.id,
-        user_id: item.user.id,
-        user_email: item.user.email,
-        tweets:item.user.tweets 
+        user: item.user,
+        tweets: ActiveModelSerializers::SerializableResource.new(item.user.tweets , each_serializer: TweetSerializer)
       }
     end
-  end
-  class TweetSerializer < ActiveModel::Serializer
-    attributes :id, :content
   end
 end
